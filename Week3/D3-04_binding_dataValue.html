@@ -1,0 +1,76 @@
+    
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> 多筆資料綁定-取用 </title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+    
+
+<body>
+
+<script>
+
+    // 資料矩陣
+    var arr=[85,60,99,49,77,59];
+    
+    
+    bind(arr); // 資料綁定
+    render(); // 顯示出綁定的資料
+    
+    
+    function bind(dataset){
+    
+        //抓出 body
+        var body=d3.select("body");
+    
+        //資料綁定後可自由取用資料
+        var selection=body.selectAll("div").data(dataset);    
+    
+    
+        // 選出沒有視覺元素可以綁定得資料，然後加視覺元素給他
+        selection.enter().append("div");
+
+        // 移除沒有資料可以綁定得視覺元素
+        selection.exit().remove();        
+        
+    }
+    
+    
+    function render(){
+        
+        // 取得跟div綁定的資料，加進text裡
+        // d3 的 selectAll 底下可以使用匿名function (參數1:資料內容，參數2:資料在Array裡的index_第幾筆)
+        d3.selectAll("div").text(function(d,i){ return (i+1)+":"+d;  })
+            .style({
+            
+                    "color":function(c){
+
+                                // 如果分數<70 ==> 紅色
+                                if (c<70){
+
+                                    return "red"
+
+                                }else{
+
+                                    return "black"
+                                }
+                        
+                
+                    }
+            })
+        
+    }
+    
+    
+    //然後用 log 印出來
+    //console.log(d3.selectAll("div"));
+    
+    
+    </script>
+
+
+
+</body>
+</html>

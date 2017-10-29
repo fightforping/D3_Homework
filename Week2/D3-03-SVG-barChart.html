@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> 迴圈長條圖 </title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+  
+    <script>
+        
+    var random=function(N,M){
+
+        console.log(N,M);
+        N=20;
+        console.log(N,M);
+        var num=( Math.random() * (M-N+1) ) + N ;
+
+        return Math.floor(num);
+    }
+        
+        
+        
+    
+    //產生畫布
+    var svg=d3.select("body").append("svg").attr({
+        "width" :600,
+        "height":1200
+    });
+        
+    //跑迴圈 每跑一次 ==> 畫一個矩形
+    for (var i=0;i<10;i=i+1){
+            
+        var num=random(20,300);
+        
+            // 單獨畫矩形
+            svg.append("rect").attr({
+                "x":10,
+                "y":10+ (15*i), // 矩形的位置拉開
+                "width":num, //  "width":20 * (i+1), "width":random(20,300),
+                "height":10,
+                "fill":"red" // 填色
+            })
+        
+        
+            // 增加文字
+            svg.append("text").attr({
+                "x":10+num+15, //位置調整2,3
+                "y":10 + (15*i) + 10, // 矩形的位置拉開 //位置調整1
+                "font-size": 12
+            }).text(num)
+        
+    
+    }
+        
+    // 當畫布不夠大 超出畫布的東西 會看不到 ==> 去調畫布大小 Or 調內容大小 
+        
+    </script>
+
+
+</body>
+</html>

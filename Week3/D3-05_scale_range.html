@@ -1,0 +1,179 @@
+    
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> 多筆資料綁定 程式整理 </title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <style>
+        .box{
+          width :20px;
+          height:20px;
+        }
+    </style>
+</head>
+    
+
+<body>
+
+
+<input type="button" value="新增" onclick="update()">
+<input type="button" value="移除" onclick="kickItem()">
+
+
+<script>
+
+    // 資料矩陣
+    //var arr=[85,60,99,49,77,59];
+    var arr=[];
+    var w=900,h=600,p=100; // w:畫布寬度 h:畫布高度 p:畫布外的空白區(padding)
+    
+    
+    svg(); // 增加畫布
+    bind(arr); // 資料綁定
+    render(); // 顯示出綁定的資料
+    
+    
+    // 畫出長條圖的畫布
+    function svg(){
+    
+        d3.select("body").append("svg")
+            .attr({
+                
+                "id": "barChart",
+                "width":w,
+                "height":h
+            
+        })
+    
+    
+    }
+    
+    
+    // 資料綁定
+    function bind(dataset){
+    
+        //抓出 id 是 barchart 的部分
+        var svg=d3.select("#barChart");
+    
+        //資料跟矩形綁定
+        var selection=svg.selectAll("rect").data(dataset);    
+        
+        // 選出沒有視覺元素可以綁定得資料，然後加視覺元素給他
+        selection.enter().append("rect");
+
+        // 移除沒有資料可以綁定得視覺元素
+        selection.exit().remove();        
+        
+        
+        
+        
+        // 文字
+        var selection_t=svg.selectAll("text").data(dataset);    
+        
+        // 選出沒有視覺元素可以綁定得資料，然後加視覺元素給他
+        selection_t.enter().append("text");
+
+        // 移除沒有資料可以綁定得視覺元素
+        selection_t.exit().remove();        
+        
+        
+    }
+    
+    
+    // 資料讀入
+    function render(){
+        
+        // 生出轉換用的比例尺
+        var ySale=d3.scale.linear()
+                    .domain([100,1000])
+                    .range([10,150])
+        
+        // 取得跟#barChart rect綁定的資料，加進text裡
+        // d3 的 selectAll 底下可以使用匿名function (參數1:資料內容，參數2:資料在Array裡的index_第幾筆)
+        d3.selectAll("#barChart rect").attr({
+            
+            
+            // 把d都用 ySale 包起來
+            x:function(d,i){
+                return p+43*i;            
+            },
+            y:function(d){
+                return h-p-ySale(d);   
+            },
+            width:40,
+            height:function(d){
+                return ySale(d);
+            },
+            fill:function(d){
+                    
+                if (d<70){
+                    return "red";
+                }else{
+                    return "lightgreen";
+                } 
+                
+            
+            }
+            
+            
+        })
+        
+        
+        
+        
+        // 文字       
+        
+        d3.selectAll("#barChart text").attr({
+            
+            x:function(d,i){
+                return p+(43*i)+20;            
+            },
+            y: h-p+20,
+            "text-anchor":"middle"   //文字的起始點
+            
+        }).text(function(d){
+        
+            return d;
+        
+        })
+        
+        
+        
+    }
+    
+    
+    // 增加元素
+    function update(){
+        
+        var num=random(100,1000);
+        arr.push(num);
+        bind(arr); // 資料綁定
+        render(); // 顯示出綁定的資料
+    
+    }
+        
+     // 移除元素
+    function kickItem(){
+        arr.shift();
+        bind(arr); // 資料綁定
+        render(); // 顯示出綁定的資料
+    }
+    
+    //隨機產生數字
+    function random(N,M){
+        
+        var rScale = d3.scale.linear()
+                    .domain([0,1]) // 0~1 是因為 餵入的數字是Math.random() ==> 0<=Math.random<1
+                    .rangeRound([N,M]);
+        
+        return rScale(Math.random());
+    }
+    
+    
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>畫音符</title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+
+<!--空白畫布-->
+<svg width="300" height="200" id="svg1">
+</svg>
+
+
+<script>    
+    
+// 用 d3的方式 對 第二個畫布做操作
+var svg = d3.select("#svg1")
+    
+
+//增加矩形 米色背景
+     svg.append("rect")
+        .attr({
+            "x": 0,
+            "y": 0,
+            "width": 300,
+            "height": 200,
+            "fill":"OldLace"
+    });
+
+    
+    
+// 增加圓圈
+    svg.append("circle")
+        .attr({
+
+            "cx": 150,
+            "cy": 120,
+            "r": 15
+    });
+
+
+// 增加矩形    
+ svg.append("rect")
+    .attr({
+
+        "x": 160,
+        "y": 45,
+        "width": 5,
+        "height": 78
+});
+
+    
+    
+// 畫線
+for (var i=0;i<5;i++){
+
+var number_y=45+(30*i);
+    
+svg.append("line")
+    .attr({
+        "x1":0,
+        "y1":number_y,
+        "x2":300,
+        "y2":number_y,
+        "stroke":"black"
+    });
+}
+
+//加上文字 A
+svg.append("text")
+    .attr({
+
+        "x":135,
+        "y":200,
+        "font-size":35,
+        "font-family":"arial"
+        
+        
+}).text("A");
+    
+    
+</script>
+
+
+</body>
+</html>

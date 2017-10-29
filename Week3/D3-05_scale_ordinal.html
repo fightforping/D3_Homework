@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> d3.scale.ordinal() </title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+<script>
+var index=["中國國民黨", "民主進步黨", "時代力量", "無黨團結聯聯盟", "親民黨"]
+var color=["blue","green","yellow","gray","orange"]
+var xScale = d3.scale.ordinal()
+      .domain(index)
+      .range(color);
+
+console.log(xScale("中國國民黨"));
+console.log(xScale("親民黨"));
+console.log(xScale("民進黨")); // 遇到沒有設定的 會從頭指定給他 (blue)
+console.log(xScale("無黨籍")); // 這是第二個遇到沒有設定的 (green)
+console.log(xScale("無黨籍")); // 已經被指定 green 就是 green 了 (green)
+
+</script>
+</body>
+</html>

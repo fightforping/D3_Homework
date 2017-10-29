@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> 一鍵即發 </title>
+    <!--  D3 -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+
+</head>
+<body>
+
+<p></p>
+<input type="button" onclick="launch()" value="啟動"> 
+<!--onclick 後面的函數要加()!! 不然完全不動-->
+    
+    
+<style>
+    
+p{
+    width : 100px;
+    height: 20px;
+    border: 5px solid red;
+}    
+    
+</style>
+    
+
+<script>
+    
+function random (N, M){
+
+    var num =( Math.random() * (M-N+1) ) + N ;
+    
+    return Math.floor(num);
+}
+
+
+
+
+function launch(){
+    
+    // 算 random
+    var random_result=random(1911,2016);
+    
+     // 用 D3 把 random 加進 p 標籤 的 text 裡面 
+     d3.select("p").text(random_result);
+    
+}
+
+</script>
+
+</body>
+</html>
