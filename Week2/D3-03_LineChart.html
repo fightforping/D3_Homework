@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> 迴圈折線圖 </title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+  
+    <script>
+     
+    //產生畫布
+    var svg=d3.select("body").append("svg").attr({
+        "width" :600,
+        "height":200
+    });
+    
+    
+
+     //跑迴圈 每跑一次 ==> 畫一個矩形
+    var start_point=[0,0];
+    var all_points=start_point.join(",");
+    for (var i=0;i<8;i=i+1){
+        var x=random(0,550);
+        var y=12*(i+1);
+        var arr=[x,y];
+        var new_point=arr.join(",")
+        all_points=all_points+" "+new_point;
+        //console.log(all_points);
+        
+        // 畫上紅點
+        svg.append("circle").attr({
+            cx:x,
+            cy:y,
+            r:5,
+            fill:"red"
+        });
+        
+        // 加上文字
+        svg.append("text").attr({
+                "x":x+20, 
+                "y":y,
+                "font-size": 12,
+                "text-anchor":"middle"
+            }).text(x);
+    }
+    var end_point=[0,y+12];
+    all_points=all_points+" "+end_point.join(",");
+    //console.log(all_points);
+    
+        
+        
+    d3.select("svg").append("polyline").attr({
+        points:all_points,
+        stroke:"black",
+        fill:"rgba(0,0,0,0)",
+        strokewidth:"2"
+        
+    })
+     
+        
+        
+//隨機變數
+    function random(N,M){
+        var num=( Math.random() * (M-N+1) ) + N ;
+        return Math.floor(num);
+    }
+        
+
+        
+    </script>
+
+
+</body>
+</html>
