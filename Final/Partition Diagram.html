@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>喜歡的作家</title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+
+<script>
+    
+//var data = [];
+var w=800, h=600, p=50;
+
+//資料讀入
+var data=d3.csv("AboutMe.csv",mid,function(dataSet){
+
+    console.log(dataSet)
+    
+    // 巢狀資料設定
+    var nested_data = d3.nest().key(function(d){
+      return d.category;
+    }).key(function(d){
+      return d.level1;
+    }).key(function(d){
+        return d.level2
+    }).entries(dataSet);
+    
+    //console.log(nested_data);
+    
+    
+    // 增加一個全部的概念!?
+    var root = {key: "喜歡的作家", values: nested_data};
+    
+svg();
+bind(root);
+render();
+
+function svg(){
+  var svg = d3.select("body").append("svg").attr({
+    width: w,
+    height: h
+  });
+  svg.append("g").attr({id: "diagram"});
+}
+    
+
+function bind(dataSet){
+  var partition = d3.layout.partition()
+  .size([w-p*2,h-p*2])
+  .sort(null)
+  .value(function(d){
+    return d.size;
+  }).children(function(d){
+    return d.values;
+  });
+  
+  
+  var nodes = partition.nodes(dataSet);
+  //console.log(nodes);
+  
+  //拿掉整體
+//   nodes = nodes.filter(function(d){
+//    return d.key!="喜歡的作家";
+//   });
+
+  var nodeSelection = d3.select("#diagram").selectAll(".node").data(nodes);
+  var enterNodeSelection = nodeSelection.enter().append("g").classed("node",true);
+  enterNodeSelection.append("rect");
+  enterNodeSelection.append("text");
+
+  nodeSelection.exit().remove();
+
+
+}
+
+function render(){
+  var fScale = d3.scale.category20c();
+  
+  d3.selectAll(".node rect")
+    .attr({
+      x :function(d){
+        return d.x;
+      },
+      y : function(d){
+        return d.y;
+      },
+      width : function(d){
+        return d.dx;
+      },
+      height :function(d){
+        return d.dy;
+      },
+    fill: function(d,i){
+      return fScale(i);
+    },
+    stroke: "#fff"
+  });
+
+   d3.selectAll(".node text")
+     .attr({
+         x: function(d){
+              return d.x;
+          },
+         y: function(d){
+                return d.y + 20;
+            },
+         "font-size": 20
+   }).text(function(d){
+     return d.key;
+   });
+ }
+  
+    
+})
+
+
+
+function mid(d){
+            
+            // 字串轉數字
+            d.size = +d.size; 
+
+        return d;
+}
+        
+
+
+
+    
+    
+</script>
+
+
+</body>
+</html>
